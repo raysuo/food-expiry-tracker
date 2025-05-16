@@ -1,30 +1,26 @@
 # Use the official Python image for ARM (Raspberry Pi)
-FROM python:3.9-slim-buster
+FROM python:3.13-rc-slim AS builder
 
-# Set working directory
+# Install uv
+RUN pip install uv
+
+# Create virtual environment and install dependencies
 WORKDIR /app
-
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    sqlite3 \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements first to leverage Docker cache
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application files
 COPY . .
+RUN uv venv && . /app/.venv/bin/activate && \
+    uv pip sync uv.lock
 
-# Initialize the database
-RUN sqlite3 /app/food.db "CREATE TABLE IF NOT EXISTS foods \
-    (id INTEGER PRIMARY KEY AUTOINCREMENT, \
-    name TEXT NOT NULL, \
-    expiry_date DATE NOT NULL, \
-    added_date DATE NOT NULL)"
+# Final stage
+FROM python:3.13-rc-slim
 
-# Make port 5000 available to the world outside this container
+# Copy virtual environment from builder
+COPY --from=builder /app /app
+
+# Set up environment
+WORKDIR /app
+ENV PATH="/app/.venv/bin:$PATH" \
+    FLASK_APP=app.py
+
+# Expose port and run application
 EXPOSE 5000
-
-# Run the application
-CMD ["python", "app.py"]
+CMD ["uv run", "app.py"]

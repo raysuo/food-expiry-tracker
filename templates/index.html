@@ -1,25 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="filter-buttons">
-    <a href="{{ url_for('index') }}" class="{{ 'active-filter' if current_filter == 'all' }}">All Items</a>
-    <a href="{{ url_for('index', filter='expired') }}" class="{{ 'active-filter' if current_filter == 'expired' }}">Expired</a>
-    <a href="{{ url_for('index', filter='expiring_soon') }}" class="{{ 'active-filter' if current_filter == 'expiring_soon' }}">Expiring Soon</a>
-    <a href="{{ url_for('index', filter='safe') }}" class="{{ 'active-filter' if current_filter == 'safe' }}">Safe</a>
-</div>
-
-{% if foods %}
-    {% for food in foods %}
-    <div class="food-item {{ food.status.replace(' ', '-') }}">
-        <h3>{{ food.name }}</h3>
-        <p><strong>Expiry Date:</strong> {{ food.expiry_date }}</p>
-        <p><strong>Status:</strong> {{ food.status|title }} 
-           ({% if food.days_left < 0 %}Expired {{ -food.days_left }} days ago{% else %}{{ food.days_left }} days left{% endif %})</p>
-        <p><strong>Added:</strong> {{ food.added_date }}</p>
-        <a href="{{ url_for('delete_food', food_id=food.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
+<div class="container">
+    <div class="filter-buttons">
+        <a href="{{ url_for('index') }}" class="filter-btn {% if current_filter == 'all' %}active{% endif %}">All Items</a>
+        <a href="{{ url_for('index', filter='expired') }}" class="filter-btn {% if current_filter == 'expired' %}active{% endif %}">Expired</a>
+        <a href="{{ url_for('index', filter='expiring_soon') }}" class="filter-btn {% if current_filter == 'expiring_soon' %}active{% endif %}">Expiring Soon</a>
+        <a href="{{ url_for('index', filter='safe') }}" class="filter-btn {% if current_filter == 'safe' %}active{% endif %}">Safe</a>
     </div>
-    {% endfor %}
-{% else %}
-    <p>No food items found.</p>
-{% endif %}
+
+    {% if foods %}
+        {% for food in foods %}
+        <div class="food-item {{ food.status.replace(' ', '-') }}">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0;">{{ food.name }}</h3>
+                <span class="status-badge {{ food.status.replace(' ', '-') }}">
+                    {{ food.status|title }}
+                </span>
+            </div>
+            <p><strong>Expiry:</strong> {{ food.expiry_date }} 
+               ({% if food.days_left < 0 %}Expired {{ -food.days_left }} days ago{% else %}{{ food.days_left }} days left{% endif %})</p>
+            <p><strong>Added:</strong> {{ food.added_date }}</p>
+            <a href="{{ url_for('delete_food', food_id=food.id) }}" class="delete-link" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No food items found. <a href="{{ url_for('add_food') }}">Add your first item</a></p>
+    {% endif %}
+    
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('add_food') }}" class="btn">+ Add New Food</a>
+    </div>
+</div>
 {% endblock %}
