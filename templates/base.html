@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Expiry Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .food-item { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .expired { background-color: #ffdddd; }
+        .expiring-soon { background-color: #fff3cd; }
+        .safe { background-color: #d4edda; }
+        .filter-buttons { margin-bottom: 20px; }
+        .filter-buttons a { margin-right: 10px; text-decoration: none; padding: 5px 10px; border-radius: 3px; }
+        .active-filter { background-color: #007bff; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Food Expiry Tracker</h1>
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a> |
+        <a href="{{ url_for('add_food') }}">Add Food</a>
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+</html>

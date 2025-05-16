@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  food-tracker:
+    build: .
+    container_name: food-tracker
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./food.db:/app/food.db  # Persist the database outside container
+      - ./templates:/app/templates  # Mount templates for easy editing
+    environment:
+      - FLASK_ENV=development

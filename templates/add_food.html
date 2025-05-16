@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add New Food Item</h2>
+<form method="POST">
+    <div>
+        <label for="name">Food Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="expiry_date">Expiry Date:</label>
+        <input type="date" id="expiry_date" name="expiry_date" required>
+    </div>
+    <button type="submit">Add Food</button>
+</form>
+{% endblock %}

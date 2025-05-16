@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="filter-buttons">
+    <a href="{{ url_for('index') }}" class="{{ 'active-filter' if current_filter == 'all' }}">All Items</a>
+    <a href="{{ url_for('index', filter='expired') }}" class="{{ 'active-filter' if current_filter == 'expired' }}">Expired</a>
+    <a href="{{ url_for('index', filter='expiring_soon') }}" class="{{ 'active-filter' if current_filter == 'expiring_soon' }}">Expiring Soon</a>
+    <a href="{{ url_for('index', filter='safe') }}" class="{{ 'active-filter' if current_filter == 'safe' }}">Safe</a>
+</div>
+
+{% if foods %}
+    {% for food in foods %}
+    <div class="food-item {{ food.status.replace(' ', '-') }}">
+        <h3>{{ food.name }}</h3>
+        <p><strong>Expiry Date:</strong> {{ food.expiry_date }}</p>
+        <p><strong>Status:</strong> {{ food.status|title }} 
+           ({% if food.days_left < 0 %}Expired {{ -food.days_left }} days ago{% else %}{{ food.days_left }} days left{% endif %})</p>
+        <p><strong>Added:</strong> {{ food.added_date }}</p>
+        <a href="{{ url_for('delete_food', food_id=food.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No food items found.</p>
+{% endif %}
+{% endblock %}
