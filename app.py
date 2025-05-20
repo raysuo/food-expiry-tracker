@@ -4,7 +4,6 @@ import sqlite3
 
 app = Flask(__name__)
 
-# Initialize database
 def init_db():
     conn = sqlite3.connect('food.db')
     c = conn.cursor()
@@ -12,7 +11,8 @@ def init_db():
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                  name TEXT NOT NULL,
                  expiry_date DATE NOT NULL,
-                 added_date DATE NOT NULL)''')
+                 added_date DATE NOT NULL,
+                 place TEXT NOT NULL)''')
     conn.commit()
     conn.close()
 
@@ -22,8 +22,7 @@ init_db()
 def index():
     conn = sqlite3.connect('food.db')
     c = conn.cursor()
-    
-    # Get filter from query parameters
+
     filter_type = request.args.get('filter', 'all')
     
     if filter_type == 'expired':
@@ -38,7 +37,6 @@ def index():
     foods = c.fetchall()
     conn.close()
     
-    # Convert to list of dicts for easier handling in template
     food_list = []
     for food in foods:
         expiry_date = datetime.strptime(food[2], '%Y-%m-%d').date()
@@ -52,6 +50,7 @@ def index():
         food_list.append({
             'id': food[0],
             'name': food[1],
+            'place': food[4],
             'expiry_date': food[2],
             'added_date': food[3],
             'status': status,
@@ -66,11 +65,12 @@ def add_food():
         name = request.form['name']
         expiry_date = request.form['expiry_date']
         added_date = datetime.now().strftime('%Y-%m-%d')
+        place = request.form['place']
         
         conn = sqlite3.connect('food.db')
         c = conn.cursor()
-        c.execute("INSERT INTO foods (name, expiry_date, added_date) VALUES (?, ?, ?)",
-                  (name, expiry_date, added_date))
+        c.execute("INSERT INTO foods (name, expiry_date, added_date, place) VALUES (?, ?, ?, ?)",
+                  (name, expiry_date, added_date, place))
         conn.commit()
         conn.close()
         

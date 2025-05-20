@@ -12,6 +12,16 @@
             <label for="expiry_date">Expiry Date:</label>
             <input type="date" id="expiry_date" name="expiry_date" required>
         </div>
+        <div class="form-group">
+            <label for="place">Storage Place:</label>
+            <select id="place" name="place" required>
+                <option value="Fridge">Geladeira</option>
+                <option value="Freezer">Freezer</option>
+                <option value="Kitchen">Armario Cozinha</option>
+                <option value="Ripostiglio">Ripostiglio</option>
+                <option value="Basement">Cantina</option>
+            </select>
+        </div>
         <button type="submit" class="btn">Add Food</button>
         <a href="{{ url_for('index') }}" class="btn" style="background-color: #6c757d; margin-left: 10px;">Cancel</a>
     </form>
