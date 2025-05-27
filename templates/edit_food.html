@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Edit Food Item</h2>
+<form method="POST">
+    <div>
+        <label for="name">Food Name:</label>
+        <input type="text" id="name" name="name" value="{{ food.name }}" required>
+    </div>
+    <div>
+        <label for="expiry_date">Expiry Date:</label>
+        <input type="date" id="expiry_date" name="expiry_date" value="{{ food.expiry_date }}" required>
+    </div>
+    <div>
+        <label for="quantity">Quantity:</label>
+        <input type="number" step="0.01" id="quantity" name="quantity" value="{{ food.quantity }}" required>
+        <select name="quantity_unit">
+            <option value="g" {% if food.quantity_unit == 'g' %}selected{% endif %}>grams</option>
+            <option value="kg" {% if food.quantity_unit == 'kg' %}selected{% endif %}>kilograms</option>
+            <option value="ml" {% if food.quantity_unit == 'ml' %}selected{% endif %}>milliliters</option>
+            <option value="L" {% if food.quantity_unit == 'L' %}selected{% endif %}>liters</option>
+            <option value="items" {% if food.quantity_unit == 'items' %}selected{% endif %}>items</option>
+        </select>
+    </div>
+    <button type="submit">Update Item</button>
+</form>
+{% endblock %}

@@ -1,29 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h2>Add New Food Item</h2>
-    <form method="POST">
-        <div class="form-group">
-            <label for="name">Food Name:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="expiry_date">Expiry Date:</label>
-            <input type="date" id="expiry_date" name="expiry_date" required>
-        </div>
-        <div class="form-group">
-            <label for="place">Storage Place:</label>
-            <select id="place" name="place" required>
-                <option value="Fridge">Geladeira</option>
-                <option value="Freezer">Freezer</option>
-                <option value="Kitchen">Armario Cozinha</option>
-                <option value="Ripostiglio">Ripostiglio</option>
-                <option value="Basement">Cantina</option>
-            </select>
-        </div>
-        <button type="submit" class="btn">Add Food</button>
-        <a href="{{ url_for('index') }}" class="btn" style="background-color: #6c757d; margin-left: 10px;">Cancel</a>
-    </form>
-</div>
+<h2>Add New Food Item</h2>
+<form method="POST">
+    <div>
+        <label for="name">Food Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="expiry_date">Expiry Date:</label>
+        <input type="date" id="expiry_date" name="expiry_date" required>
+    </div>
+    <div>
+        <label for="quantity">Quantity:</label>
+        <input type="number" step="0.01" id="quantity" name="quantity" required>
+        <select name="quantity_unit">
+            <option value="g">grams</option>
+            <option value="kg">kilograms</option>
+            <option value="ml">milliliters</option>
+            <option value="L">liters</option>
+            <option value="items" selected>items</option>
+        </select>
+    </div>
+    <button type="submit">Add Food</button>
+</form>
 {% endblock %}
