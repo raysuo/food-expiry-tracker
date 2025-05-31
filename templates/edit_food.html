@@ -22,6 +22,16 @@
             <option value="items" {% if food.quantity_unit == 'items' %}selected{% endif %}>items</option>
         </select>
     </div>
+    <div class="form-group">
+            <label for="place">Storage Place:</label>
+            <select id="place" name="place" required>
+                <option value="Fridge">Geladeira</option>
+                <option value="Freezer">Freezer</option>
+                <option value="Kitchen">Armario Cozinha</option>Add commentMore actions
+                <option value="Ripostiglio">Ripostiglio</option>
+                <option value="Basement">Cantina</option>
+            </select>
+        </div>
     <button type="submit">Update Item</button>
 </form>
 {% endblock %}
